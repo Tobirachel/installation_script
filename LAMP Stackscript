@@ -1,0 +1,49 @@
+sudo yum update -y
+# install apache
+sudo yum install httpd -y
+#start apache service
+sudo systemctl start httpd
+sudo systemctl enable httpd
+#verify apache is running
+sudo systemctl status httpd
+#install php 
+sudo yum install php -y
+#install php extentions
+sudo yum install php-cli php-fpm php-mysqlnd php-bcmath php-ctype php-fileinfo php-json php-mbstring php-pdo php-gd php-tokenizer php-xml -y
+#install mysql community repo
+sudo wget https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm 
+sudo ls -lrt
+#install server
+sudo dnf install mysql80-community-release-el9-1.noarch.rpm -y
+dnf repolist enabled | grep "mysql.*-community.*"
+sudo dnf install mysql-community-server -y
+#start mysql server
+sudo systemctl start mysqld
+sudo mysql -V
+# install phb-curl on your instance 
+sudo yum install php-curl -y
+cd /etc
+#cat php.ini | grep memory_limit
+#cat php.ini | grep max_execution_time
+sudo sed -i 's/^max_execution_time\s*=\s*.*/max_execution_time = 300/' /etc/php.ini
+# cat httpd.conf | grep AllowOverride
+#enable mod_rewrite on ec2
+sudo sed -i "/<Directory "\/var\/www\/html">/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/httpd/conf/httpd.conf
+#app installation and configuration
+1.store app codes in an s3 bucket
+2. migrate the following SQL script int RDS
+3. copy app codes from the s3 bucket into the '/var/www/html'
+4. set permissions 777 for the '/var/www/html' directory and the 'storage/' directory
+5. edit the '.env' file located in the html directory and add the following values for your domain name and database credentials:
+   a) APP_URL= enter your domain name
+   b) DB_HOST= enter your RDS Endpoint
+   c) DB_DATABASE= enter your database name
+    d) DB_USERNAME= enter your RDS username name
+    e) DB_PASSWORD= enter your RDS database password
+6. open the 'AppServiceProvider.php' file in the '/var/www/html/app/Providers' directory and the following code in the public function boot(): void. see the picture below:
+   github account.
+Provide the URL of the fully deployed site
+8. provide a screenshot of the fully deployed site showing that the website is encrypted.
+9. Provide a screenshot of the Auto Scaling Group.
+
+
